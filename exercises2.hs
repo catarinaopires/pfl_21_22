@@ -1,3 +1,5 @@
+import Data.Char (ord, chr, isNumber)
+import GHC.Unicode (isLower, isUpper)
 -- 2.1
 soma1 :: Int 
 soma1 = sum [a^2 | a <- [1..100]]
@@ -17,9 +19,12 @@ dotprod a b = sum [ x*y | (x, y) <- zip a b]
 
 -- 2.4
 divprop :: Integer -> [Integer]
-divprop a = filter (\n -> a `mod` n == 0) [1..a-1]
+divprop a = [x | x <- [1..a-1], a `mod` x == 0]
+--divprop a = filter (\n -> a `mod` n == 0) [1..a-1]
 
 -- 2.5
+perfeitos :: Integer -> [Integer]
+perfeitos a = [ x | x <- [1..a], x == sum (divprop x)]
 
 -- 2.6*
 pitagoricos :: Integer ->[(Integer ,Integer ,Integer)] 
@@ -37,6 +42,8 @@ pascal :: Integer -> [[Integer]]
 pascal a = [map(binom i)[0..i] | i <- [0..a]]
 
 -- 2.9
+cifrar :: Int -> String -> String
+cifrar k s = [chr ( ((ord x - ord 'a' + k) `mod` 26) + ord 'a') | x <- s ]
 
 -- 2.10*
 -- a)
@@ -73,10 +80,29 @@ myelem n (x:xs) | n == x = True
                 | otherwise = myelem n xs
 
 -- 2.11
+myconcat' :: [[a]] -> [a]
+myconcat' l = [x | xs <- l, x <- xs]
+
+myreplicate' :: Int -> a -> [a]
+myreplicate' n a = [a | _ <- [1..n]]
+
 
 -- 2.12
+forte :: String -> Bool
+forte x = length x >= 8 && any isLower x && any isUpper x && any isNumber x
 
 -- 2.13
+mindiv :: Int -> Int
+mindiv 0 = 0
+mindiv 1 = 1
+mindiv n | null z = n 
+         | otherwise = head z
+         where z = [ y | y <- [2..(floor . sqrt . fromIntegral) n], n `mod` y == 0]
+
+primo' :: Int -> Bool
+primo' n | n <= 1 = False 
+         | otherwise = mindiv n == n
+
 
 -- 2.14*
 mynub :: Eq a => [a] -> [a]
@@ -104,12 +130,26 @@ algarismosRev a | a < 10 = [a]
 algarismos :: Int -> [Int]
 algarismos a = reverse (algarismosRev a)
 
-
 -- 2.17
+toBitsRev :: Int -> [Int]
+toBitsRev a | a < 2 = [a]  
+            | otherwise = (a `mod` 2) : toBitsRev (a `div` 2)
+
+toBits :: Int -> [Int]
+toBits a = reverse (toBitsRev a)
 
 -- 2.18
+fromBits :: [Int] -> Int
+fromBits a = fromBitsAux (reverse a)
+
+fromBitsAux :: [Int] -> Int
+fromBitsAux [] = 0
+fromBitsAux (x:xs) = x + fromBitsAux ([a*2 | a <- xs])
 
 -- 2.19
+mdc :: Integer -> Integer -> Integer
+mdc a 0 = a
+mdc a b = mdc b (a `mod` b)
 
 -- 2.20*
 -- a)
@@ -133,6 +173,8 @@ myinsert a (x:xs) | a > x = x : myinsert a xs
 
 
 -- 2.21
+
+
 
 -- 2.22
 
