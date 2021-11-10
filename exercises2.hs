@@ -86,6 +86,10 @@ myconcat' l = [x | xs <- l, x <- xs]
 myreplicate' :: Int -> a -> [a]
 myreplicate' n a = [a | _ <- [1..n]]
 
+myindex' :: [a] -> Int -> a
+myindex' l i = head ([x | x <- l, n <- [0..length l - 1], n == i])
+-- ou
+--myindex' l i = head([ x | (x,y) <- zip l [0..length l - 1], y==i]) 
 
 -- 2.12
 forte :: String -> Bool
