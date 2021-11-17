@@ -45,6 +45,12 @@ minimum' l = foldl1 (min) l
 
 -- b)
 -- 3.6
+-- mdc a b = if b == 0 then a else mdc b (a‘mod‘b)
+
+mdc :: Int -> Int -> Int
+mdc a b = fst (until (\(a, b) ->  b == 0) (\(a, b) -> (b, a `mod` b)) (a, b))
+
+-- fst: devolve o primeiro elemento de um tuplo
 
 -- 3.7*
 -- a)
@@ -84,3 +90,11 @@ palavras' s = takeWhile (not.isSpace) s : palavras' (dropWhile isSpace (dropWhil
                 
 
 -- 3.9
+scanl' :: (b -> a -> b) -> b -> [a] -> [b]
+scanl' _ x [] = [x]
+scanl' f x (y:ys) = x : scanl' f (f x y) ys
+
+scanr' :: (a -> b -> b) -> b -> [a] -> [b]
+scanr' _ x [] = [x]
+scanr' f x (y:ys) = (f y (head partialResult)) : partialResult
+    where partialResult = scanr' f x ys
