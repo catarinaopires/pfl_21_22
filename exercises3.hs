@@ -44,6 +44,12 @@ minimum' :: Ord a => [a] -> a
 minimum' l = foldl1 (min) l
 
 -- b)
+foldl1' :: (a -> a -> a) -> [a] -> a
+foldl1' f l = foldl f (head l) (tail l)
+
+foldr1' :: (a -> a -> a) -> [a] -> a
+foldr1' f l = foldr f (last l) (init l)
+
 -- 3.6
 -- mdc a b = if b == 0 then a else mdc b (a‘mod‘b)
 
@@ -88,7 +94,6 @@ palavras' :: String -> [String]
 palavras' [] = [] 
 palavras' s = takeWhile (not.isSpace) s : palavras' (dropWhile isSpace (dropWhile (not.isSpace) s))
                 
-
 -- 3.9
 scanl' :: (b -> a -> b) -> b -> [a] -> [b]
 scanl' _ x [] = [x]
