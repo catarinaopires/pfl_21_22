@@ -1,7 +1,7 @@
 import Data.Char (ord, chr, isNumber)
 import GHC.Unicode (isLower, isUpper)
 -- 2.1
-soma1 :: Int 
+soma1 :: Int
 soma1 = sum [a^2 | a <- [1..100]]
 
 -- 2.2
@@ -27,7 +27,7 @@ perfeitos :: Integer -> [Integer]
 perfeitos a = [ x | x <- [1..a], x == sum (divprop x)]
 
 -- 2.6*
-pitagoricos :: Integer ->[(Integer ,Integer ,Integer)] 
+pitagoricos :: Integer ->[(Integer ,Integer ,Integer)]
 pitagoricos a = filter ( \(x, y, z) -> x^2 + y^2 == z^2 )[(x, y, z) | x <- [1..a], y <- [1..a], z <- [1..a]]
 
 -- 2.7*
@@ -76,7 +76,7 @@ myindex (x:xs) i = myindex xs (i-1)
 -- f)
 myelem :: Eq a => a -> [a] -> Bool
 myelem n [] = False
-myelem n (x:xs) | n == x = True 
+myelem n (x:xs) | n == x = True
                 | otherwise = myelem n xs
 
 -- 2.11
@@ -99,12 +99,12 @@ forte x = length x >= 8 && any isLower x && any isUpper x && any isNumber x
 mindiv :: Int -> Int
 mindiv 0 = 0
 mindiv 1 = 1
-mindiv n | null z = n 
+mindiv n | null z = n
          | otherwise = head z
          where z = [ y | y <- [2..(floor . sqrt . fromIntegral) n], n `mod` y == 0]
 
 primo' :: Int -> Bool
-primo' n | n <= 1 = False 
+primo' n | n <= 1 = False
          | otherwise = mindiv n == n
 
 
@@ -118,17 +118,17 @@ mynub l = head l : mynub [x | x <- tail l, x /= head l]
         -- Percorre a lista sem o primeiro elemento e devolve uma lista onde não tem elementos iguais ao primeiro elemento da lista original
     -- head l : mynub [x | x <- tail l, x /= head l]
         -- Percorre lista e remove os elementos a seguir ao current elemento analisado
-    
+
 
 -- 2.15*
 myintersperse :: a -> [a] -> [a]
 myintersperse a [] = []
 myintersperse a [l] = [l]           -- [l] lista com um elemento, neste caso l
-myintersperse a (x:xs) = [x, a] ++ myintersperse a xs 
+myintersperse a (x:xs) = [x, a] ++ myintersperse a xs
 
 -- 2.16*
 algarismosRev :: Int -> [Int]
-algarismosRev a | a < 10 = [a]  
+algarismosRev a | a < 10 = [a]
                 | otherwise = (a `mod` 10) : algarismosRev (a `div` 10)
 
 algarismos :: Int -> [Int]
@@ -136,7 +136,7 @@ algarismos a = reverse (algarismosRev a)
 
 -- 2.17
 toBitsRev :: Int -> [Int]
-toBitsRev a | a < 2 = [a]  
+toBitsRev a | a < 2 = [a]
             | otherwise = (a `mod` 2) : toBitsRev (a `div` 2)
 
 toBits :: Int -> [Int]
@@ -173,7 +173,7 @@ myinsert a l = qsort (a:l) -}
 myinsert :: Ord a => a -> [a] -> [a]
 myinsert a [] = [a]
 myinsert a (x:xs) | a > x = x : myinsert a xs
-                  | otherwise = a : (x:xs) 
+                  | otherwise = a : (x:xs)
 
 
 -- 2.21
@@ -183,3 +183,14 @@ myinsert a (x:xs) | a > x = x : myinsert a xs
 -- 2.22
 
 -- 2.23*
+-- a)
+addPoly :: [Int] -> [Int] -> [Int]
+addPoly [] l = l
+addPoly l [] = l
+addPoly l1 l2 = (head l1 + head l2) : addPoly (tail l1) (tail l2)
+
+-- b)
+multPoly :: [Int] -> [Int] -> [Int]
+multPoly [] l = []
+multPoly l [] = []
+multPoly l1 l2 = addPoly ([head l1 * y | y <- l2]) (multPoly (tail l1) (0 : l2))
