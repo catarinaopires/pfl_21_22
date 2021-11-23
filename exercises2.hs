@@ -177,10 +177,35 @@ myinsert a (x:xs) | a > x = x : myinsert a xs
 
 
 -- 2.21
+myMinimum :: Ord a => [a] -> a
+myMinimum l   | length l == 1 = head l
+            | otherwise = if head l < myMinimum (tail l) then head l else myMinimum (tail l)
 
+myDelete :: Eq a => a -> [a] -> [a]
+myDelete a [] = []
+myDelete a l    | head l == a = tail l
+                | otherwise = head l : myDelete a (tail l)
+
+ssort :: Ord a => [a] -> [a]
+ssort [] = []
+ssort l = myMinimum l : ssort (myDelete (myMinimum l) l)
 
 
 -- 2.22
+myMerge :: Ord a => [a] -> [a] -> [a]
+myMerge [] [] = []
+myMerge [] l = l
+myMerge l [] = l
+myMerge l1 l2   | head l1 < head l2 = head l1 : myMerge (tail l1) l2
+                | otherwise = head l2 : myMerge l1 (tail l2)
+
+metades :: [a] -> ([a],[a])
+metades l = splitAt (div (length l) 2) l
+
+msort :: Ord a => [a] -> [a]
+msort [] = []
+msort l | length l == 1 = [head l]
+        | otherwise = myMerge (msort (fst (metades l))) (msort(snd (metades l)))
 
 -- 2.23*
 -- a)
