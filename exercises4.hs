@@ -39,6 +39,16 @@ intercalar' x ys = (ys ++ [x]) : [i ++ [last ys] | i <- intercalar x (init ys)]
 
 -- 4.4*
 
+unique :: (Eq a) => [a] -> [a]
+unique [] = []
+unique (x : xs)
+  | x `elem` xs = unique xs
+  | otherwise = x : unique xs
+
+perms :: Eq a => [a] -> [[a]]
+perms [a] = [[a]]
+perms l = unique (concat [intercalar (l!!i) perm | i <- [0..length l - 1], perm <- perms (take i l ++ drop (i+1) l)]) 
+
 -- 4.5*
 cifrar :: Int -> Char -> Char
 cifrar k s = chr ( ((ord s - ord 'a' + k) `mod` 26) + ord 'a')
@@ -86,7 +96,11 @@ nivel 0 (No a _ _) = [a]
 nivel n (No a esq dir) = nivel (n-1) esq ++ nivel (n-1) dir
 
 -- 4.10*
+mapArv :: (a -> b) -> Arv a -> Arv b
+mapArv f Vazia = Vazia
+mapArv f (No a esq dir) = No (f a) (mapArv f esq) (mapArv f dir)
 
 -- 4.11*
 
 -- 4.12*
+-- FAZER
