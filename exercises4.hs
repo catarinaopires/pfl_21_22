@@ -35,7 +35,7 @@ intercalar a l = (a:l) : [ take i l ++ [a] ++ drop i l | i <- [1.. length l]]
 
 intercalar' :: a -> [a] -> [[a]]
 intercalar' x [] = [[x]]
-intercalar' x ys = (ys ++ [x]) : [i ++ [last ys] | i <- intercalar x (init ys)]
+intercalar' x ys = (ys ++ [x]) : [i ++ [last ys] | i <- intercalar' x (init ys)]
 
 -- 4.4*
 
