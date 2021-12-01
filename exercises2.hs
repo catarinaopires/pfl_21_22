@@ -209,13 +209,22 @@ msort l | length l == 1 = [head l]
 
 -- 2.23*
 -- a)
+putListSameSize :: [Int] -> Int -> [Int]
+putListSameSize l n | length l < n = putListSameSize (0:l) n
+                    | otherwise = l
+
 addPoly :: [Int] -> [Int] -> [Int]
-addPoly [] l = l
-addPoly l [] = l
-addPoly l1 l2 = (head l1 + head l2) : addPoly (tail l1) (tail l2)
+addPoly l1 l2 = addPoly' (putListSameSize l1 (length l2)) (putListSameSize l2 (length l1))
+
+
+addPoly' :: [Int] -> [Int] -> [Int]
+addPoly' [] [] = []
+addPoly' l1 l2 = (head l1 + head l2) : addPoly (tail l1) (tail l2)
 
 -- b)
 multPoly :: [Int] -> [Int] -> [Int]
+multPoly [0] _ = [0]
+multPoly _ [0] = [0]
 multPoly [] l = []
 multPoly l [] = []
-multPoly l1 l2 = addPoly ([head l1 * y | y <- l2]) (multPoly (tail l1) (0 : l2))
+multPoly (x:xs) l2 = addPoly ([x * y | y <- l2]) (multPoly xs l2 ++ [0])

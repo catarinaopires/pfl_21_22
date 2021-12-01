@@ -1,7 +1,7 @@
 import Data.Char (isLetter)
 -- 3.1
 -- [f x | x ← xs, p x]
--- map (f) filter (p x) xs
+-- map (f) (filter p xs)
 
 -- 3.2
 dec2int :: [Int] -> Int
