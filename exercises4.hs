@@ -104,3 +104,17 @@ mapArv f (No a esq dir) = No (f a) (mapArv f esq) (mapArv f dir)
 
 -- 4.12*
 -- FAZER
+-- 4.12*
+-- a)
+maisEsq :: Arv a -> a
+maisEsq (No x Vazia _) = x
+maisEsq (No _ esq _) = maisEsq esq
+
+maisDir :: Arv a -> a
+maisDir (No x _ Vazia) = x
+maisDir (No _ _ dir) = maisDir dir
+
+-- b)
+removerMaisDir :: Ord a =>  Arv a -> Arv a
+removerMaisDir (No x esq dir) | x == maisDir esq = Vazia
+                              | otherwise = No x esq (removerMaisDir dir)
