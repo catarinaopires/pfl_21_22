@@ -70,3 +70,43 @@ calcular s = if isEmpty(pop stk) then result else error "Stack not empty"
         stk = foldl calc empty (palavras' s)
         result = top stk
 
+-- 5.3
+import Data.List
+newtype Conjunto a = Conj [a]
+
+insert :: Eq a => a -> Conjunto a -> Conjunto a
+insert a (Conj c) | elem a c = Conj c
+                  | otherwise = Conj (a:c)    
+
+remover :: Eq a => a -> Conjunto a -> Conjunto a
+remover a (Conj c) = Conj (delete a c)
+
+unir :: Eq a => Conjunto a -> Conjunto a -> Conjunto a
+unir (Conj c) a = foldl (insert) c a
+
+diferenca :: Eq a => Conjunto a -> Conjunto a -> Conjunto a
+diferenca a (Conj c) = foldl (remover) c k
+
+intersecao :: Eq a => Conjunto a -> Conjunto a -> Conjunto a
+intersecao a (Conj c) = diferenca a diff 
+    where 
+        diff = diferenca a (Conj c)
+
+-- 5.6*
+data Map k a = Vazia | No' k a (Map k a) (Map k a)
+
+_empty :: Map k a
+_empty = Vazia
+
+_insert :: Ord k => k -> a -> Map k a -> Map k a
+_insert k a Vazia = No' k a Vazia Vazia
+_insert k a (No' key aa left right) | k < key = No' key aa (_insert k a left) right
+                                  | k > key = No' key aa left (_insert k a right)
+                                  | otherwise = No' key aa left right
+
+lookup' :: Ord k => k -> Map k a -> Maybe a
+lookup' k Vazia = Nothing
+lookup' k (No' key a left right) | k == key = Just a
+                               | k < key = lookup' k left
+                               | k > key = lookup' k right
+
