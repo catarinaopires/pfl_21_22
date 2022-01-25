@@ -84,10 +84,69 @@ couples(List) :- setof(C, couple(C), List).
 parent_of_two(P1-P2) :- parent(P1, X), parent(P2, X), parent(P1, Y), parent(P2, Y), P1 @< P2, X @< Y.
 parents_of_two(Parents) :- setof(C, parent_of_two(C), Parents).
 
-%6.a, b, e, g
-%
-%
-%
-%
-%
-%
+%6.
+leciona(algoritmos, adalberto).
+leciona(bases_de_dados, bernardete).
+leciona(compiladores, capitolino).
+leciona(estatistica, diogenes).
+leciona(redes, ermelinda).
+
+
+frequenta(algoritmos, alberto).
+frequenta(algoritmos, bruna).
+frequenta(algoritmos, cristina).
+frequenta(algoritmos, diogo).
+frequenta(algoritmos, eduarda).
+
+frequenta(bases_de_dados, antonio).
+frequenta(bases_de_dados, bruno).
+frequenta(bases_de_dados, cristina).
+frequenta(bases_de_dados, duarte).
+frequenta(bases_de_dados, eduardo).
+
+frequenta(compiladores, alberto).
+frequenta(compiladores, bernardo).
+frequenta(compiladores, clara).
+frequenta(compiladores, diana).
+frequenta(compiladores, eurico).
+
+frequenta(estatistica, antonio).
+frequenta(estatistica, bruna).
+frequenta(estatistica, claudio).
+frequenta(estatistica, duarte).
+frequenta(estatistica, eva).
+
+frequenta(redes, alvaro).
+frequenta(redes, beatriz).
+frequenta(redes, claudio).
+frequenta(redes, diana).
+frequenta(redes, eduardo).
+
+aluno(X, Y) :- frequenta(UC, X), leciona(UC, Y).
+
+colega(X, Y, UC) :- frequenta(UC, X), frequenta(UC, Y), (X \= Y).
+
+%a %b
+teachers(T) :- setof(Teacher, UC^leciona(UC, Teacher), T).
+
+%c
+students_of(T, S) :- setof(Student, UC^(leciona(UC, T), frequenta(UC, Student)), S).
+
+%d
+teachers_of(S, T) :- setof(Teacher, UC^(leciona(UC, Teacher), frequenta(UC, S)), T).
+
+%e
+common_courses(S1, S2, -C) :- setof(UC, colega(S1, S2, UC), C).
+
+%f
+more_than_one_course(L) :- setof(Student, (UC1, UC2)^(frequenta(UC1, Student), frequenta(UC2, Student), UC1 \= UC2), L).
+
+%g
+:-use_module(library(ordsets)).
+
+strangers(L) :- setof(S1-S2, (UC1,UC2)^(frequenta(UC1, S1), frequenta(UC2, S2), S1 \= S2), StudentPairs),
+                setof(S1-S2, UC^colega(S1, S2, UC), MatePairs),
+                ord_subtract(StudentPairs, MatePairs, L).
+
+%h
+good_groups(L) :- setof(S1-S2, (UC1, UC2)^(frequenta(UC1, S1), frequenta(UC2, S1), frequenta(UC1, S2), frequenta(UC2, S2), UC1 \= UC2, S1 \= S2), L).
