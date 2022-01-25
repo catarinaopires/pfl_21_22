@@ -143,7 +143,13 @@ del_all_list([], L, L).
 del_all_list([H | T], List1, List2) :- del_all(H, List1, L),
                                        del_all_list(T, L, List2).
 
+%e
+del_dups([], []).
+del_dups([H | T], [H | R]) :- member(H, T), 
+                              del_all(H, T, L),
+                              del_dups(L, R).
 
+del_dups([H | T], [H | R]) :- del_dups(T, R).
 
 %f
 list_perm([], []).
@@ -257,4 +263,32 @@ un_rle([C-N | L], [C | T]) :- Next is N-1,
 
 
 /* 10 */
+%a
+is_ordered([_]).
+is_ordered([A, B | R]) :- integer(A), 
+                          integer(B),
+                          B > A,
+                          is_ordered([B | R]).
+
+%b
+insert_ordered(V, [A | H], [V, A | H]) :- V < A.
+insert_ordered(V, [A | H], [A | R]) :- insert_ordered(V, H, R).
+insert_ordered(V, [], [V]).
+
+%c
+insert_sort(L, R) :- insert_sort(L, [], R).
+insert_sort([], R, R).
+insert_sort([H | L], Acc, R) :- insert_ordered(H, Acc, New),
+                                insert_sort(L, New, R).
+
 /* 11 */
+pascal(0, [[1]]).
+pascal(N, [R, R1 | RN]) :-
+    N1 is N-1,
+    pascal(N1, [R1 | RN]),
+    pascal_next_row([0|R1], R).
+
+pascal_next_row([X],[X]).
+pascal_next_row([H,H2|T],[A|B]):-
+    pascal_next_row([H2|T],B),
+    A is H + H2.
