@@ -45,21 +45,49 @@ get_all_nodes(ListOfAirports) :- setof(AeroportFrom, (A, B, C, D, AeroportTo)^
                             
 %nota: ir buscar os aeroportos origem OU aeroportos destino dos flights
 
+%b
+score(Company, Score) :- setof(Destination, (Or, Code, Hour, Dur)^flight(Or, Destination, Company, Code, Hour, Dur), Destinations),
+                         length(Destinations, Score).
+
+most_diversified([Company], Company).
+most_diversified([Company | T], Company) :- most_diversified(T, NextBest),
+                                            score(Company, BestScore),
+                                            score(NextBest, NextBestScore),
+                                            BestScore >= NextBestScore.
+most_diversified([Competitor | T], Company) :- score(Competitor, CompScore),
+                                               score(Company, BestScore),
+                                               BestScore >= CompScore,
+                                               most_diversified(T, Company).
+
+most_diversified(Company) :- setof(Company, (Or,Dest,Code,Hour,Dur)^flight(Or, Dest, Company, Code, Hour, Dur), Companies),
+                             most_diversified(Companies, Company).
+
 %c
-connects_dfs(S, F) :- connects_dfs(S, F, [S]).
-                      connects_dfs(F, F, _Path).
-                      
-connects_dfs(S, F, T):- flight(S, N, _, _, _, _),
-                        \+ member(N, T),
-                        connects_dfs(N, F, [N|T]).
+connects_dfs(S, F, C) :- connects_dfs(S, F, [S], C).
 
+connects_dfs(F, F, _Path, []).        
+connects_dfs(S, F, T, [C | R]):- flight(S, N, _, C, _, _),
+                           \+ member(N, T),
+                           connects_dfs(N, F, [N|T], R).
 
-%find_flights(+Origin, +Destination, -Flights) :- 
+find_flights(Or, Dest, Flights) :- connects_dfs(Or, Dest, Flights).
 
 %d
+connects_bfs(S, F, C):- connects_bfs([S], F, [S], C).
 
+connects_bfs([F|_], F, _V, []).
+connects_bfs([S|R], F, V, [C | R]):- findall(N,
+                                        (flight(S, N, _, C, _, _),
+                                        not(member(N, V)),
+                                        not(member(N, [S|R]))), L),
+                                     append(R, L, NR),
+                                     connects_bfs(NR, F, [S|V], R).
 
-%h
+find_flights_breadth(Or, Dest, Flights) :- connects_dfs(Or, Dest, Flights).
+
+%e
+find_all_flights(Or, Dest, ListOfFlights) :- bagof(F, find_flights(Or, Dest, F), ListOfFlights).
+
 
 
 
