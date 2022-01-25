@@ -199,13 +199,7 @@ c)
 */
 chefe_de(X,Y) :- cargo(C, X), cargo(B, Y), chefiado_por(C,B), B \= C.  %C-cargo, B- cargo boss
 
-/* ERRO: MULTIPLE TIMES SAME ANWSER */
-sameChefe(X,Y) :- chefe_de(X, B1), cargo(C, B1), chefe_de(Y, B2), cargo(C, B2), B1 @< B2, X  @< Y.
 
-
-/* DÚVIDA */
-notResponsible(C) :- \+(cargo(C, Y), chefiado_por(W, C), W \= C). %REVER
-%...
 
 /* 6 */
 /*
@@ -272,6 +266,3 @@ v. d(A, B).
 
 
 
-/*
-DÚVIDAS: 5c)
-*/
