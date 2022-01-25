@@ -33,6 +33,10 @@ separate([H|T], P, Yes, [H|No]) :-
                 \+ G,
                 separate(T, P, Yes, No).
 
+% d
+ask_execute :-  write('Insira o que deseja executar'),nl,
+                read(C),
+                C.
 
 
 % 3
@@ -165,4 +169,25 @@ flight tp1949 from porto to lisbon at 16:15.
 :-op(550, xfy, else).
 if X then Y else Z :- X, Y.
 if X then Y else Z :- \+ X, Z.
+
+% 6
+% a) Element exists_in List
+:-op(600, xfx, exists_in).
+Element exists_in List :- member(Element, List).
+
+% b) append A to B results C
+:-use_module(library(lists)).
+
+:-op(500, fx, append).
+:-op(600, xfx, to).
+:-op(500, xfx, results).
+
+append A to B results C :- append(B, A, C).
+
+% c) remove Elem from List results Result
+:-op(500, fx, remove).
+:-op(600, xfx, from).
+:-op(500, xfx, results).
+
+remove Elem from List results Result :- delete(List, Elem, Result).
 
