@@ -143,12 +143,7 @@ del_all_list([], L, L).
 del_all_list([H | T], List1, List2) :- del_all(H, List1, L),
                                        del_all_list(T, L, List2).
 
-%e - REVER ORDEM
-del_dups([], []).
-del_dups([H | T], R) :- member(H, T), 
-                        del_dups(T, R).
 
-del_dups([H | T], [H | R]) :- del_dups(T, R).
 
 %f
 list_perm([], []).
@@ -263,9 +258,3 @@ un_rle([C-N | L], [C | T]) :- Next is N-1,
 
 /* 10 */
 /* 11 */
-
-/*
-TODO: REVER 6e), 9a)
-7-11
-
-*/
