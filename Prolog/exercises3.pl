@@ -38,14 +38,6 @@ print_string([]).
 print_string([H | T]) :- put_code(H),
                          print_string(T).
 
-%c - ACABAR
-/* print_banner(Text, Symbol, Padding) :- length(Text, Len)
-                                       Size is Padding + Len, 
-                                       print_n(Symbol, Size),
-                                       print_n(' ', Padding),
-                                       print_string(Text),
-                                       print_n(' ', Padding), 
-                                       print_n(Symbol, Size),  */
 
 
 %d
