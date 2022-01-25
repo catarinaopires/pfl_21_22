@@ -46,9 +46,25 @@ get_all_nodes(ListOfAirports) :- setof(AeroportFrom, (A, B, C, D, AeroportTo)^
 %nota: ir buscar os aeroportos origem OU aeroportos destino dos flights
 
 %c
+connects_dfs(S, F) :- connects_dfs(S, F, [S]).
+                      connects_dfs(F, F, _Path).
+                      
+connects_dfs(S, F, T):- flight(S, N, _, _, _, _),
                         \+ member(N, T),
+                        connects_dfs(N, F, [N|T]).
+
+
+%find_flights(+Origin, +Destination, -Flights) :- 
+
 %d
+
+
 %h
+
+
+
+
+
 
 
 

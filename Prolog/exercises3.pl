@@ -38,6 +38,16 @@ print_string([]).
 print_string([H | T]) :- put_code(H),
                          print_string(T).
 
+%c - ACABAR
+/* print_banner(Text, Symbol, Padding) :- length(Text, Len)
+                                       Size is Padding + Len, 
+                                       print_n(Symbol, Size),
+                                       print_n(' ', Padding),
+                                       print_string(Text),
+                                       print_n(' ', Padding), 
+                                       print_n(Symbol, Size),  */
+
+
 %d
 read_number_aux(N, N) :- peek_code(10), !, skip_line.
 read_number_aux(Acc, N) :- get_code(A),
@@ -82,3 +92,10 @@ couples(List) :- setof(C, couple(C), List).
 parent_of_two(P1-P2) :- parent(P1, X), parent(P2, X), parent(P1, Y), parent(P2, Y), P1 @< P2, X @< Y.
 parents_of_two(Parents) :- setof(C, parent_of_two(C), Parents).
 
+%6.a, b, e, g
+%
+%
+%
+%
+%
+%
