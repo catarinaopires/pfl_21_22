@@ -101,9 +101,34 @@ mapArv f Vazia = Vazia
 mapArv f (No a esq dir) = No (f a) (mapArv f esq) (mapArv f dir)
 
 -- 4.11*
-
--- 4.12*
 -- FAZER
+-- a)
+-- Construir uma árvore equilibrada
+-- pré-condição: a lista de valores deve estar
+-- por ordem crescente
+construir :: [a] -> Arv a
+construir [] = Vazia
+construir xs = No x (construir xs') (construir xs'')
+        where 
+          n = length xs`div`2     -- ponto médio
+          xs' = take n xs         -- partir a lista
+          x:xs'' = drop n xs
+
+
+
+-- FAZER
+
+-- b)
+inserir :: Ord a => a -> Arv a -> Arv a
+inserir x Vazia = No x Vazia Vazia
+inserir x (No y esq dir)
+      | x==y = No y esq dir             -- já ocorre; não insere
+      | x<y = No y (inserir x esq) dir  -- insere à esquerda
+      | x>y = No y esq (inserir x dir)  -- insere à direita
+      
+construir' xs = foldr inserir Vazia xs
+
+
 -- 4.12*
 -- a)
 maisEsq :: Arv a -> a

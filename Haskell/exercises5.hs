@@ -70,6 +70,9 @@ calcular s = if isEmpty(pop stk) then result else error "Stack not empty"
         stk = foldl calc empty (palavras' s)
         result = top stk
 
+-- c)
+-- usar monad IO
+
 -- 5.3
 import Data.List
 newtype Conjunto a = Conj [a]
@@ -92,6 +95,48 @@ intersecao a (Conj c) = diferenca a diff
     where 
         diff = diferenca a (Conj c)
 
+-- 5.4*
+data Set a = Folha | No a (Set a) (Set a)
+
+showSet :: Show a => Set a -> String
+showSet Folha = ""
+showSet (No val left right) = show val ++ "-{" ++ showSet left ++ "}-{" ++ showSet right ++ "}"
+
+empty_ :: Set a
+empty_ = Folha
+
+insert_ :: Ord a => a -> Set a -> Set a
+insert_ val Folha = No val Folha Folha
+insert_ val (No x left right)
+  | val < x = No x (insert_ val left) right
+  | val > x = No x left (insert_ val right)
+  | otherwise = No x left right
+
+member :: Ord a => a -> Set a -> Bool
+member val Folha = False
+member val (No x left right)
+  | val < x = member val left
+  | val > x = member val right
+  | otherwise = True
+
+-- 5.5*
+union, intersect, difference :: Ord a => Set a -> Set a -> Set a
+union Folha y = y
+union (No val left right) y = union (left `union` right) (insert_ val y)
+
+insertFrom :: Ord a => Set a -> Set a -> Set a -> Bool -> Set a
+insertFrom Folha y resultSet common = resultSet
+insertFrom (No val left right) y resultSet common
+  | if common then isMember else not isMember = insertFrom remainingSet y (insert_ val resultSet) common
+  | otherwise = insertFrom remainingSet y resultSet common
+  where
+    remainingSet = left `union` right
+    isMember = member val y
+
+intersect x y = insertFrom x y empty_ True
+
+difference x y = insertFrom x y empty_ False
+
 -- 5.6*
 data Map k a = Vazia | No' k a (Map k a) (Map k a)
 
@@ -110,3 +155,4 @@ lookup' k (No' key a left right) | k == key = Just a
                                | k < key = lookup' k left
                                | k > key = lookup' k right
 
+-- 5.7
