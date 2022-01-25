@@ -33,10 +33,6 @@ separate([H|T], P, Yes, [H|No]) :-
                 \+ G,
                 separate(T, P, Yes, No).
 
-% d - TODO!!!
-ask_execute :-  write('Insira o que deseja executar'),nl,
-                read(C),
-                call(C).
 
 
 % 3
@@ -170,11 +166,3 @@ flight tp1949 from porto to lisbon at 16:15.
 if X then Y else Z :- X, Y.
 if X then Y else Z :- \+ X, Z.
 
-% 6
-% a) Element exists_in List  -- TODO!!!!!!!!!
-/* :-op(600, xfx, exists_in).
-Element exists_in List :- member(Element, List). */
-
-% b) append A to B results C
-
-% c) remove Elem from List results Result
