@@ -37,6 +37,42 @@ separate([H|T], P, Yes, [H|No]) :-
 ask_execute :-  write('Insira o que deseja executar'),nl,
                 read(C),
                 C.
+%2
+%a
+my_arg(Index, Term, Arg) :- Term =.. [_Name | Args],
+                            nth1(Index, Args, Arg).
+
+/*
+my_arg(Position,f(a,b,c),Arg).
+
+Position = 1, Arg = a ;
+Position = 2, Arg = b ;
+Position = 3, Arg = c.
+*/
+
+my_functor(Term, Name, Arity) :- Term =.. [Name, Args],
+                                 length(Args, Arity).
+
+/*
+my_functor(parent(homer, bart), Name, Arity).
+Name= parent,
+Arity = 2
+
+my_functor(Term, parent, 2).
+Term= parent(_A, _B)
+*/
+
+%b
+get_args(Final, N, _, []) :- Final is N+1.
+get_args(N, Arity, Term, [H | T]) :- arg(N, Term, H),
+                                     NewVal is N + 1,
+                                     get_args(NewVal, Arity, Term, T).
+
+univ(Term, [Name | Args]) :- functor(Term, Name, Arity),
+                             get_args(1, Arity, Term, Args).
+
+%c
+:-op(500, xfx, univ).
 
 
 % 3
